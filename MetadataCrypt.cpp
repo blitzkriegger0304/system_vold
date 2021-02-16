@@ -117,10 +117,7 @@ static bool read_key(const FstabEntry& data_rec, bool create_if_absent, KeyBuffe
     std::string sKey;
     auto dir = key_dir + "/key";
     LOG(DEBUG) << "key_dir/key: " << dir;
-    if (fs_mkdirs(dir.c_str(), 0700)) {
-        PLOG(ERROR) << "Creating directories: " << dir;
-        return false;
-    }
+    if (!MkdirsSync(dir, 0700)) return false;
     auto temp = key_dir + "/tmp";
     auto newKeyPath = dir + "/" + kFn_keymaster_key_blob_upgraded;
     /* If we have a leftover upgraded key, delete it.
